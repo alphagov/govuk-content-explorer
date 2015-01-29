@@ -1,0 +1,32 @@
+{%- macro documents(results, document_link, filter_link, title_or_slug) -%}
+<ul>
+{% for result in results.documents %}
+<li>
+<a href="{{ document_link(result) }}">{{ result.title }}</a><br>
+<i>{{ result.index }}: {{ result.display_type or '' }} ({{ result.document_type }}: {{ ', '.join(result.format) }})</i><br>
+{{ result.description }}<br>
+
+{% for v in result.specialist_sectors %}
+  Topic: <a href="{{ filter_link("specialist_sectors", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% endfor %}
+
+{% for v in result.mainstream_browse_pages %}
+  Browse page: <a href="{{ filter_link("mainstream_browse_pages", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% endfor %}
+
+{% for v in result.organisations %}
+  Organisation: <a href="{{ filter_link("organisations", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% endfor %}
+
+{% for v in result.format %}
+  Format: <a href="{{ filter_link("format", v)}}">{{ v }}</a><br>
+{% endfor %}
+
+{% for v in result.manual %}
+  Manual: <a href="{{ filter_link("manual", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% endfor %}
+<br>
+</li>
+{% endfor %}
+</ul>
+{%- endmacro -%}

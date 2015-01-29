@@ -1,0 +1,9 @@
+{%- import 'boilerplate.html' as boilerplate -%}
+{%- import 'documents.html' as documents -%}
+{%- import 'forms.html' as forms -%}
+{%- import 'facets.html' as facets -%}
+{{- boilerplate.header("Comparing %s with %s" % (field_a, field_b)) -}}
+{{- forms.search(q, filters, filter_link) -}}
+<hr>
+
+{{- boilerplate.footer() -}}

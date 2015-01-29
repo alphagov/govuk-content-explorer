@@ -1,0 +1,29 @@
+{%- import 'boilerplate.html' as boilerplate -%}
+{%- import 'documents.html' as documents -%}
+{%- import 'forms.html' as forms -%}
+{%- import 'facets.html' as facets -%}
+{{- boilerplate.header() -}}
+{{- forms.search(q, filters, filter_link) -}}
+<hr>
+
+<div id="tabs">
+  <ul>
+    <li><a href="#documents">Documents<br>{{ results.count }} matching</a></li>
+    {%- for field, value in results.facets.items() -%}
+      <li><a href="#facet-{{ field }}">{{ field }}<br>{{ value["total_options"] }} values</a></li>
+    {%- endfor -%}
+  </ul>
+
+  <ul>
+    <li id="documents">
+    {{ documents.documents(results, document_link, filter_link, title_or_slug) }}
+    </li>
+    {%- for field in results.facets.keys() -%}
+      <li id="facet-{{ field }}">
+        {{ facets.facet(results, field, filter_link, compare_link) }}
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{{- boilerplate.footer() -}}

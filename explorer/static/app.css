@@ -1,0 +1,16 @@
+.facet_options {
+  border: 1px solid black;
+  display: block;
+  overflow: scroll;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  padding: 0
+}
+li {
+  list-style: none;
+}
