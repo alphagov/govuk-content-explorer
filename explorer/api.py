@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from .search import perform_search
+import collections
 import urllib
 
 app = Flask(__name__)
@@ -78,11 +79,30 @@ class Scope(object):
             "count": 0,
         }
         for field, values in self.filters.items():
-            args["filter_" + field] = values
-        args["facet_" + field_a] = "1000,example_scope:global,examples:1000,example_fields:%s" % (
+            if field != field_a:
+                args["filter_" + field] = values
+        args["facet_" + field_a] = "1000000,example_scope:query,examples:1000000,example_fields:%s" % (
             field_b,
         )
-        return perform_search(**args)
+        search_results = perform_search(**args)
+        result = []
+        for option in search_results["facets"][field_a]["options"]:
+            value = option["value"]
+            counts = collections.Counter()
+            for example in value["example_info"]["examples"]:
+                if example is None:
+                    counts[None] += 1
+                else:
+                    for field_b_value in example[field_b]:
+                        counts[field_b_value] += 1
+
+            title = value.get("title", value.get("slug", value.get("link")))
+            result.append(dict(
+                title=title,
+                documents=option["documents"],
+                counts=sorted(counts.items(), key=lambda x: x[1], reverse=True)
+            ))
+        return result
 
 
 class Document(object):
@@ -178,10 +198,12 @@ def main_page(scope, context):
     return render_template("index.html", **context)
 
 def compare_page(scope, context, field_a, field_b):
+    field_overlap = scope.compare(field_a, field_b)
+
     context["field_a"] = field_a
     context["field_b"] = field_b
     context["filter_link"] = scope.filter_link
+    context["field_overlap"] = field_overlap
 
-    results = scope.compare(field_a, field_b)
 
     return render_template("compare.html", **context)

@@ -6,4 +6,19 @@
 {{- forms.search(q, filters, filter_link) -}}
 <hr>
 
+<table>
+{%- for info in field_overlap -%}
+<tr>
+
+  <th>{{ info.title }} ({{ info.documents }}</th>
+  {%- for value, count in info.counts -%}
+  <td>{{ value }}<br>{{ count }}</td>
+  {%- endfor -%}
+  <td></td>
+
+</tr>
+
+{%- endfor -%}
+</table>
+
 {{- boilerplate.footer() -}}
