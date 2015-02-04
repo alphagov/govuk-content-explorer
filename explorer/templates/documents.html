@@ -21,10 +21,6 @@
 {% for v in result.format %}
   Format: <a href="{{ filter_link("format", v)}}">{{ v }}</a><br>
 {% endfor %}
-
-{% for v in result.manual %}
-  Manual: <a href="{{ filter_link("manual", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
-{% endfor %}
 <br>
 </li>
 {% endfor %}

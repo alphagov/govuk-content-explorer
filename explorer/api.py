@@ -29,8 +29,7 @@ class Scope(object):
             "facet_mainstream_browse_pages": "1000",
             "facet_organisations": "1000",
             "facet_format": "1000",
-            "facet_manual": "1000",
-            "fields": "title,link,slug,display_type,format,description,specialist_sectors,mainstream_browse_pages,organisations,format,manual",
+            "fields": "title,link,slug,display_type,format,description,specialist_sectors,mainstream_browse_pages,organisations,format",
         }
         for field, values in self.filters.items():
             result["filter_" + field] = values
