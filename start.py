@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import explorer
+from explorer import app
 import sys
 
 if __name__ == '__main__':
@@ -8,4 +8,4 @@ if __name__ == '__main__':
         debug = True
     else:
         debug = False
-    explorer.app.run(debug=debug)
+    app.run(debug=debug)
