@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{% block title %}GOV.UK search explorer{% endblock %}</title>
+    <link rel="stylesheet" href="/static/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/jquery-ui.min.css">
+    <script src="/static/jquery-1.11.2.min.js"></script>
+    <script src="/static/jquery-ui.min.js"></script>
+    <script>
+      $(function() {
+        $("#tabs").tabs();
+      });
+    </script>
+  </head>
+  <body>
+  {% block content %}{% endblock %}
+  </body>
+</html>

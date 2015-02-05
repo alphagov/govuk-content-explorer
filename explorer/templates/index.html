@@ -1,8 +1,10 @@
-{%- import 'boilerplate.html' as boilerplate -%}
+{% extends 'layout.html' %}
+
 {%- import 'documents.html' as documents -%}
 {%- import 'forms.html' as forms -%}
 {%- import 'facets.html' as facets -%}
-{{- boilerplate.header() -}}
+
+{% block content %}
 {{- forms.search(q, filters, filter_link) -}}
 <hr>
 
@@ -26,4 +28,4 @@
   </ul>
 </div>
 
-{{- boilerplate.footer() -}}
+{% endblock %}

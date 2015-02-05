@@ -1,16 +1,32 @@
-{%- import 'boilerplate.html' as boilerplate -%}
-{%- import 'documents.html' as documents -%}
+{% extends 'layout.html' %}
+
 {%- import 'forms.html' as forms -%}
-{%- import 'facets.html' as facets -%}
-{{- boilerplate.header("Comparing %s with %s" % (field_a, field_b)) -}}
+
+{% block title %}
+Comparing {{ field_a }} with {{ field_b }}
+{% endblock %}
+
+{% block content %}
 {{- forms.search(q, filters, filter_link) -}}
 <hr>
 
+<p>
+Considering all documents matching the filters.
+</p>
+
 <table>
+<tr>
+  <th>{{ field_a|title }}</th>
+  <th>Total documents</th>
+  <th>Documents with no {{ field_b }}</th>
+  <th>Values of {{ field_b }}...</th>
+</tr>
 {%- for info in field_overlap -%}
 <tr>
 
-  <th>{{ info.title }} ({{ info.documents }}</th>
+  <th>{{ info.title }}</th>
+  <td>{{ info.documents }}</td>
+  <td>{{ info.no_value_count }}</td>
   {%- for value, count in info.counts -%}
   <td>{{ value }}<br>{{ count }}</td>
   {%- endfor -%}
@@ -21,4 +37,4 @@
 {%- endfor -%}
 </table>
 
-{{- boilerplate.footer() -}}
+{% endblock %}
