@@ -50,7 +50,7 @@ class Scope(object):
     def search_args(self):
         result = {
             "q": self.q,
-            "count": 100,
+            "count": 1000,
             "facet_specialist_sectors": "1000",
             "facet_mainstream_browse_pages": "1000",
             "facet_organisations": "1000",
