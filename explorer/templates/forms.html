@@ -1,9 +1,9 @@
-{%- macro search(q, filters, filter_link) -%}
+{%- macro search(scope) -%}
 
 <form target="/" method="GET">
-  <label for="q">Search: </label><input type="search" name="q" value="{{- q -}}" id="q">
+  <label for="q">Search: </label><input type="search" name="q" value="{{- scope.q -}}" id="q">
   <input type="submit" name="Search">
-  {%- for field, values in filters.items() -%}
+  {%- for field, values in scope.filters.items() -%}
     {%- for value in values %}
       <input type="hidden" name="filter_{{ field }}" value="{{ value }}">
     {%- endfor -%}
@@ -11,7 +11,7 @@
 </form>
 
 <ul>
-  {%- for field, values in filters.items() %}
+  {%- for field, values in scope.filters.items() %}
     {%- if values.__len__ == 1 %}
       <strong>{{ field }}</strong> is
     {%- elif values.__len__ > 1 %}
@@ -20,7 +20,7 @@
 
     {%- for value in values %}
       <li>
-        <a href="{{ filter_link(field, value, remove=True) }}" title="Remove this filter">X</a>
+        <a href="{{ scope.filter_link(field, value, remove=True) }}" title="Remove this filter">X</a>
       {{ value }}
       </li>
     {%- endfor %}

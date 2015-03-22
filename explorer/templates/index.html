@@ -5,7 +5,7 @@
 {%- import 'facets.html' as facets -%}
 
 {% block content %}
-{{- forms.search(q, filters, filter_link) -}}
+{{- forms.search(scope) -}}
 <hr>
 
 <div id="tabs">
@@ -18,11 +18,11 @@
 
   <ul>
     <li id="documents">
-    {{ documents.documents(results, document_link, filter_link, title_or_slug) }}
+    {{ documents.documents(results, scope, title_or_slug) }}
     </li>
     {%- for field in results.facets.keys() -%}
       <li id="facet-{{ field }}">
-        {{ facets.facet(results, field, filter_link, compare_link) }}
+        {{ facets.facet(results, field, scope) }}
       </li>
     {%- endfor -%}
   </ul>

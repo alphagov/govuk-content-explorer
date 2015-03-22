@@ -1,29 +1,29 @@
-{%- macro documents(results, document_link, filter_link, title_or_slug) -%}
+{%- macro documents(results, scope, title_or_slug) -%}
 <ul>
-{% for result in results.documents %}
+{% for document in results.documents %}
 <li>
-<a href="{{ document_link(result) }}">{{ result.title }}</a><br>
-<i>{{ result.index }}: {{ result.display_type or '' }} ({{ result.document_type }}: {{ ', '.join(result.format) }})</i><br>
-{{ result.description }}<br>
+<a href="{{ scope.document_link(document) }}">{{ document.title }}</a><br>
+<i>{{ document.index }}: {{ document.display_type or '' }} ({{ document.document_type }}: {{ ', '.join(document.format) }})</i><br>
+{{ document.description }}<br>
 
-{% for v in result.specialist_sectors %}
-  Topic: <a href="{{ filter_link("specialist_sectors", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% for v in document.specialist_sectors %}
+  Topic: <a href="{{ scope.filter_link("specialist_sectors", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
 
-{% for v in result.mainstream_browse_pages %}
-  Browse page: <a href="{{ filter_link("mainstream_browse_pages", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% for v in document.mainstream_browse_pages %}
+  Browse page: <a href="{{ scope.filter_link("mainstream_browse_pages", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
 
-{% for v in result.organisations %}
-  Organisation: <a href="{{ filter_link("organisations", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% for v in document.organisations %}
+  Organisation: <a href="{{ scope.filter_link("organisations", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
 
-{% for v in result.document_collections %}
-  Collection: <a href="{{ filter_link("document_collections", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% for v in document.collections %}
+  Collection: <a href="{{ scope.filter_link("document_collections", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
 
-{% for v in result.format %}
-  Format: <a href="{{ filter_link("format", v)}}">{{ v }}</a><br>
+{% for v in document.format %}
+  Format: <a href="{{ scope.filter_link("format", v)}}">{{ v }}</a><br>
 {% endfor %}
 <br>
 </li>

@@ -1,25 +1,25 @@
-{%- macro facet(results, field, filter_link, compare_link) -%}
+{%- macro facet(results, field, scope) -%}
 <p>Compare with:</p>
 <ul>
   <li>
     {% for other_field in results.facets.keys() %}
-      <a href="{{ compare_link(field, other_field) }}">{{ other_field }}</a>
+      <a href="{{ scope.compare_link(field, other_field) }}">{{ other_field }}</a>
     {% endfor %}
   </li>
 </ul>
 
-{{ facet_value(field, results.facets[field], filter_link) }}
+{{ facet_value(field, results.facets[field], scope) }}
 {%- endmacro -%}
 
-{%- macro facet_value(field, value, filter_link) -%}
+{%- macro facet_value(field, value, scope) -%}
 <p>{{ value["total_options"] }} different values:</p>
 <ul class="facet_options">
   {% if value["documents_with_no_value"] != 0 %}
-    <li><a href="{{ filter_link(field, "_MISSING") }}">No entry ({{ value["documents_with_no_value"] }} documents)</a></li>
+    <li><a href="{{ scope.filter_link(field, "_MISSING") }}">No entry ({{ value["documents_with_no_value"] }} documents)</a></li>
   {% endif %}
   {% for option in value["options"] %}
     {% if option != "_MISSING" %}
-      <li><a href="{{ filter_link(field, option["value"]["slug"]) }}">{{ option["value"]["title"] or option["value"]["slug"] }} ({{ option["documents"] }} documents)</a></li>
+      <li><a href="{{ scope.filter_link(field, option["value"]["slug"]) }}">{{ option["value"]["title"] or option["value"]["slug"] }} ({{ option["documents"] }} documents)</a></li>
     {% endif %}
   {% endfor %}
 </ul>

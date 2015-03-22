@@ -8,33 +8,20 @@ class Scope(object):
     """Define the scope of documents being considered
 
     """
+    def __init__(self, request):
+        """Make a scope object for this request.
 
-    FACET_FIELDS = (
-        "document_collections"
-        "specialist_sectors",
-        "mainstream_browse_pages",
-        "organisations",
-        "format",
-    )
+        :param request: The query parameters from the request.
 
-    DISPLAY_FIELDS = (
-        "title",
-        "link",
-        "slug",
-        "document_collections",
-        "display_type",
-        "description",
-        "specialist_sectors",
-        "mainstream_browse_pages",
-        "organisations",
-        "format",
-    )
-
-    def __init__(self, args):
+        """
+        args = request.args
         self.q = args.get("q", "")
         self.filters = self._parse_filters(args)
 
     def _parse_filters(self, args):
+        """Parse the filter parameters from the request args.
+
+        """
         result = {}
         for (name, values) in args.iterlists():
             if name.startswith("filter_"):
@@ -43,6 +30,9 @@ class Scope(object):
         return result
 
     def form_args(self):
+        """Arguments needed for the search form in templates.
+
+        """
         result = {
             "q": self.q,
             "filters": self.filters
@@ -50,15 +40,11 @@ class Scope(object):
         return result
 
     def search_args(self):
+        """Basic arguments required to apply this scope to a search.
+
+        """
         result = {
             "q": self.q,
-            "count": 1000,
-            "facet_specialist_sectors": "1000",
-            "facet_mainstream_browse_pages": "1000",
-            "facet_document_collections": "1000",
-            "facet_organisations": "1000",
-            "facet_format": "1000",
-            "fields": ",".join(self.DISPLAY_FIELDS),
         }
         for field, values in self.filters.items():
             result["filter_" + field] = values
@@ -73,6 +59,9 @@ class Scope(object):
         return params
 
     def filter_link(self, field, value, remove=False):
+        """A link to a filter.
+
+        """
         params = self.base_link_params()
         if remove:
             params["filter_" + field] = [
@@ -97,19 +86,14 @@ class Scope(object):
             link = "/" + link
         return "https://www.gov.uk" + link
 
-    def search(self):
-        args = self.search_args()
-        return perform_search(**args)
-
     def compare(self, field_a, field_b):
         args = {
             "q": self.q,
             "count": 0,
         }
         for field, values in self.filters.items():
-            if field != field_a:
-                args["filter_" + field] = values
-        args["facet_" + field_a] = "1000000,example_scope:query,examples:1000000,example_fields:%s" % (
+            args["filter_" + field] = values
+        args["facet_" + field_a] = "1000000,scope:all_filters,example_scope:query,examples:1000000,example_fields:%s" % (
             field_b,
         )
         search_results = perform_search(**args)

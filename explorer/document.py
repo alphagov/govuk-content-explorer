@@ -8,6 +8,30 @@ class Document(object):
     single string when they're single-valued).
 
     """
+
+    # The fields that we want to be able to display on documents.
+    DISPLAY_FIELDS = (
+        "title",
+        "link",
+        "slug",
+        "document_collections",
+        "display_type",
+        "description",
+        "specialist_sectors",
+        "mainstream_browse_pages",
+        "organisations",
+        "format",
+    )
+
+    # Fields that we want to facet on
+    FACET_FIELDS = (
+        "document_collections"
+        "specialist_sectors",
+        "mainstream_browse_pages",
+        "organisations",
+        "format",
+    )
+
     def __init__(self, fields):
         self.fields = fields
 
