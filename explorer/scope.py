@@ -10,6 +10,7 @@ class Scope(object):
     """
 
     FACET_FIELDS = (
+        "document_collections"
         "specialist_sectors",
         "mainstream_browse_pages",
         "organisations",
@@ -20,6 +21,7 @@ class Scope(object):
         "title",
         "link",
         "slug",
+        "document_collections",
         "display_type",
         "description",
         "specialist_sectors",
@@ -53,6 +55,7 @@ class Scope(object):
             "count": 1000,
             "facet_specialist_sectors": "1000",
             "facet_mainstream_browse_pages": "1000",
+            "facet_document_collections": "1000",
             "facet_organisations": "1000",
             "facet_format": "1000",
             "fields": ",".join(self.DISPLAY_FIELDS),
