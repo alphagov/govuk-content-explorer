@@ -19,6 +19,7 @@ def title_or_slug(item):
 
 @app.route("/")
 def main(**params):
+    print request.args
     scope = Scope(request)
     context = dict(scope=scope)
 

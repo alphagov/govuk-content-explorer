@@ -25,7 +25,7 @@ class Document(object):
 
     # Fields that we want to facet on
     FACET_FIELDS = (
-        "document_collections"
+        "document_collections",
         "specialist_sectors",
         "mainstream_browse_pages",
         "organisations",

@@ -1,6 +1,7 @@
 from . import config
 from .document import Document
 import requests
+from time import time
 
 
 def perform_search(**params):
@@ -13,25 +14,35 @@ def perform_search(**params):
 
 
 def fetch_documents(scope):
-    args = fetch_document_args(scope)
-    results = perform_search(**args)
-    return present_documents(results)
+    documents = perform_search(**fetch_document_args(scope))
+    facets = {}
+    for field in Document.FACET_FIELDS:
+        start = time()
+        facet_results = perform_search(**fetch_facet_args(scope, field))
+        facets[field] = facet_results["facets"][field]
+        print "Fetched %s facet in %fs" % (field, time() - start)
+    return present_documents(documents, facets)
 
 
 def fetch_document_args(scope):
     args = scope.search_args()
     args["count"] = 1000
     args["fields"] = ",".join(Document.DISPLAY_FIELDS)
-    for field in Document.FACET_FIELDS:
-        args["facet_" + field] = "1000,scope:all_filters"
     return args
 
 
-def present_documents(results):
+def fetch_facet_args(scope, facet_field):
+    args = scope.search_args()
+    args["count"] = 0
+    args["facet_" + facet_field] = "1000,scope:all_filters"
+    return args
+
+
+def present_documents(documents, facets):
     return {
-        "count": results["total"],
-        "documents": [Document(result)
-            for result in results["results"]
+        "count": documents["total"],
+        "documents": [Document(document)
+            for document in documents["results"]
         ],
-        "facets": results["facets"],
+        "facets": facets,
     }
