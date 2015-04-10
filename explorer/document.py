@@ -1,3 +1,5 @@
+import dateutil.parser
+
 class Document(object):
     """A document returned from elasticsearch.
 
@@ -21,6 +23,7 @@ class Document(object):
         "mainstream_browse_pages",
         "organisations",
         "format",
+        "public_timestamp",
     )
 
     # Fields that we want to facet on
@@ -43,6 +46,12 @@ class Document(object):
             return val
         else:
             return val[0]
+
+    def _datefield(self, fieldname):
+        val = self._strfield(fieldname)
+        if val is None:
+            return None
+        return dateutil.parser.parse(val)
 
     def _tuplefield(self, fieldname):
         val = self.fields.get(fieldname, ())
@@ -74,4 +83,8 @@ class Document(object):
             "description",
         ):
             return self._strfield(fieldname)
+        elif fieldname in (
+            "public_timestamp",
+        ):
+            return self._datefield(fieldname)
         return self._tuplefield(fieldname)

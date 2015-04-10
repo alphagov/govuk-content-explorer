@@ -17,6 +17,7 @@ class Scope(object):
         args = request.args
         self.q = args.get("q", "")
         self.filters = self._parse_filters(args)
+        self.order = args.get("order", "")
 
     def _parse_filters(self, args):
         """Parse the filter parameters from the request args.
@@ -46,6 +47,8 @@ class Scope(object):
         result = {
             "q": self.q,
         }
+        if self.order:
+            result["order"] = self.order
         for field, values in self.filters.items():
             result["filter_" + field] = values
         return result
@@ -56,6 +59,8 @@ class Scope(object):
         }
         for f, values in self.filters.items():
             params["filter_" + f] = list(values)
+        if self.order:
+            params["order"] = self.order
         return params
 
     def filter_link(self, field, value, remove=False):
@@ -71,6 +76,14 @@ class Scope(object):
             ]
         else:
             params.setdefault("filter_" + field, []).append(value)
+        return "/?" + urllib.urlencode(params, doseq=True)
+
+    def order_link(self, order):
+        """A link to change the sort order.
+
+        """
+        params = self.base_link_params()
+        params["order"] = order
         return "/?" + urllib.urlencode(params, doseq=True)
 
     def compare_link(self, field_a, field_b):

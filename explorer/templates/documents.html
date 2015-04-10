@@ -1,10 +1,26 @@
 {%- macro documents(results, scope, title_or_slug) -%}
+<div class="option_links">
+  <label>Order:</label>
+  <ul>
+    <li>
+      <a href="{{ scope.order_link("") }}">Relevance</a>
+    </li>
+    <li>
+      <a href="{{ scope.order_link("-public_timestamp") }}">Most recent major update</a>
+    </li>
+    <li>
+      <a href="{{ scope.order_link("public_timestamp") }}">Least recent major update</a>
+    </li>
+  </ul>
+</div>
+
 <ul>
 {% for document in results.documents %}
 <li>
 <a href="{{ scope.document_link(document) }}">{{ document.title }}</a><br>
 <i>{{ document.index }}: {{ document.display_type or '' }} ({{ document.document_type }}: {{ ', '.join(document.format) }})</i><br>
 {{ document.description }}<br>
+Last major update: {{ document.public_timestamp }}<br>
 
 {% for v in document.specialist_sectors %}
   Topic: <a href="{{ scope.filter_link("specialist_sectors", v["slug"])}}">{{ title_or_slug(v) }}</a><br>

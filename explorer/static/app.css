@@ -14,3 +14,18 @@ ul {
 li {
   list-style: none;
 }
+
+.option_links {
+  margin-bottom: 1em;
+}
+
+.option_links ul {
+  display: inline;
+}
+
+.option_links ul li {
+  display: inline;
+  border: thin solid black;
+  color: red;
+  margin-left: 1em;
+}

@@ -1,12 +1,14 @@
 {%- macro facet(results, field, scope) -%}
-<p>Compare with:</p>
+<div class="option_links">
+<label>Compare with:</label>
 <ul>
-  <li>
-    {% for other_field in results.facets.keys() %}
+  {% for other_field in results.facets.keys() %}
+    <li>
       <a href="{{ scope.compare_link(field, other_field) }}">{{ other_field }}</a>
-    {% endfor %}
-  </li>
+    </li>
+  {% endfor %}
 </ul>
+</div>
 
 {{ facet_value(field, results.facets[field], scope) }}
 {%- endmacro -%}
