@@ -32,6 +32,7 @@ class Document(object):
         "specialist_sectors",
         "mainstream_browse_pages",
         "organisations",
+        "search_format_types",
         "format",
     )
 
