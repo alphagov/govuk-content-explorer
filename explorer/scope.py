@@ -119,7 +119,10 @@ class Scope(object):
                 if example is None:
                     no_value_count += 1
                 else:
-                    for field_b_value in example[field_b]:
+                    field_values = example[field_b]
+                    if isinstance(field_values, basestring):
+                        field_values = [field_values]
+                    for field_b_value in field_values:
                         counts[field_b_value] += 1
 
             title = value.get("title", value.get("slug", value.get("link")))
