@@ -53,5 +53,5 @@ def render_compare_csv(context):
     writer = csv.writer(output)
     for row in context["field_overlap"]:
         items = [u"%s %d" % (item[0], item[1]) for item in row["counts"]]
-        writer.writerow([row["title"], row["documents"], row["no_value_count"]] + items)
+        writer.writerow([row["title"].encode('utf8'), row["documents"], row["no_value_count"]] + items)
     return Response(output.getvalue(), mimetype='text/csv')
