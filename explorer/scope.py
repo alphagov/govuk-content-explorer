@@ -63,6 +63,11 @@ class Scope(object):
             params["order"] = self.order
         return params
 
+    def in_format_link(self, format):
+        params = self.base_link_params()
+        params["format"] = format
+        return "/?" + urllib.urlencode(params, doseq=True)
+
     def filter_link(self, field, value, remove=False):
         """A link to a filter.
 
