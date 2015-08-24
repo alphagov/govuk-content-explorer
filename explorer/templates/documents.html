@@ -34,6 +34,10 @@ Last major update: {{ document.public_timestamp }}<br>
   Organisation: <a href="{{ scope.filter_link("organisations", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
 
+{% for v in document.policies %}
+  Policies: <a href="{{ scope.filter_link("policies", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% endfor %}
+
 {% for v in document.collections %}
   Collection: <a href="{{ scope.filter_link("document_collections", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
