@@ -4,7 +4,7 @@ from StringIO import StringIO
 
 from .document import Document
 from .scope import Scope
-from .search import fetch_documents
+from .search import fetch_documents, fetch_lots_of_documents
 
 app = Flask(__name__)
 
@@ -30,12 +30,47 @@ def main(**params):
         field_a, field_b = compare.split(",", 2)
         return compare_page(scope, context, field_a, field_b, format)
     else:
+        if format == "csv":
+            return documents_csv(scope)
         return main_page(scope, context)
 
 def main_page(scope, context):
     context["results"] = fetch_documents(scope)
     context["title_or_slug"] = title_or_slug
     return render_template("index.html", **context)
+
+def documents_csv(scope):
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        'link',
+        'title',
+        'public_timestamp',
+        'format',
+        'specialist_sectors',
+        'mainstream_browse_pages',
+        'organisations',
+        'policies',
+        'document_collections',
+    ])
+    for doc in fetch_lots_of_documents(scope, 10000):
+        if doc.public_timestamp:
+            d = doc.public_timestamp.isoformat()
+        else:
+            d = None
+        row = [
+            doc.link.encode('utf8'),
+            doc.title.encode('utf8'),
+            d,
+            (u', '.join(doc.format)).encode('utf8'),
+            (u', '.join(v['slug'] for v in doc.specialist_sectors)).encode('utf8'),
+            (u', '.join(doc.mainstream_browse_pages)).encode('utf8'),
+            (u', '.join(org['slug'] for org in doc.organisations)).encode('utf8'),
+            (u', '.join(doc.policies)).encode('utf8'),
+            (u', '.join(doc.collections)).encode('utf8'),
+        ]
+        writer.writerow(row)
+    return Response(output.getvalue(), mimetype='text/csv')
 
 def compare_page(scope, context, field_a, field_b, format):
     field_overlap = scope.compare(field_a, field_b)
