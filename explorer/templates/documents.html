@@ -1,4 +1,6 @@
 {%- macro documents(results, scope, title_or_slug) -%}
+<a href="{{ scope.in_format_link("csv") }}">As CSV (at most 10000 documents)</a>
+
 <div class="option_links">
   <label>Order:</label>
   <ul>
@@ -32,6 +34,10 @@ Last major update: {{ document.public_timestamp }}<br>
 
 {% for v in document.organisations %}
   Organisation: <a href="{{ scope.filter_link("organisations", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
+{% endfor %}
+
+{% for v in document.policies %}
+  Policies: <a href="{{ scope.filter_link("policies", v["slug"])}}">{{ title_or_slug(v) }}</a><br>
 {% endfor %}
 
 {% for v in document.collections %}

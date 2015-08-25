@@ -24,6 +24,19 @@ def fetch_documents(scope):
     return present_documents(documents, facets)
 
 
+def fetch_lots_of_documents(scope, max_documents):
+    fetched = 0
+    search_args = fetch_document_args(scope)
+    while fetched < max_documents:
+        search_args["start"] = fetched
+        documents = perform_search(**search_args).get("results", [])
+        if len(documents) == 0:
+            break
+        for document in documents:
+            yield Document(document)
+            fetched += 1
+
+
 def fetch_document_args(scope):
     args = scope.search_args()
     args["count"] = 1000
