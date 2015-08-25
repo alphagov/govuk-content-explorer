@@ -47,6 +47,8 @@ def documents_csv(scope):
         'title',
         'public_timestamp',
         'format',
+        'display_type',
+        'document_type',
         'specialist_sectors',
         'mainstream_browse_pages',
         'organisations',
@@ -55,14 +57,16 @@ def documents_csv(scope):
     ])
     for doc in fetch_lots_of_documents(scope, 10000):
         if doc.public_timestamp:
-            d = doc.public_timestamp.isoformat()
+            public_timestamp = doc.public_timestamp.isoformat()
         else:
-            d = None
+            public_timestamp = None
         row = [
             doc.link.encode('utf8'),
             doc.title.encode('utf8'),
-            d,
+            public_timestamp,
             (u', '.join(doc.format)).encode('utf8'),
+            (doc.display_type or u'').encode('utf8'),
+            (doc.document_type or u'').encode('utf8'),
             (u', '.join(v['slug'] for v in doc.specialist_sectors)).encode('utf8'),
             (u', '.join(doc.mainstream_browse_pages)).encode('utf8'),
             (u', '.join(org['slug'] for org in doc.organisations)).encode('utf8'),
