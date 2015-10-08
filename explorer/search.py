@@ -47,7 +47,7 @@ def fetch_document_args(scope):
 def fetch_facet_args(scope, facet_field):
     args = scope.search_args()
     args["count"] = 0
-    args["facet_" + facet_field] = "1000,scope:all_filters"
+    args["facet_" + facet_field] = "1000,scope:exclude_field_filter"
     return args
 
 
