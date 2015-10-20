@@ -121,7 +121,7 @@ class Scope(object):
             counts = collections.Counter()
             no_value_count = 0
             for example in value["example_info"]["examples"]:
-                if example is None:
+                if example is None or example.get(field_b) is None:
                     no_value_count += 1
                 else:
                     field_values = example[field_b]
