@@ -71,7 +71,7 @@ def documents_csv(scope):
             (u', '.join(doc.mainstream_browse_pages)).encode('utf8'),
             (u', '.join(org['slug'] for org in doc.organisations)).encode('utf8'),
             (u', '.join(doc.policies)).encode('utf8'),
-            (u', '.join(c['link'] for c in doc.document_collections)).encode('utf8'),
+            (u', '.join(c.get('link') or ('/government/collections/' + c['slug']) for c in doc.document_collections)).encode('utf8'),
         ]
         writer.writerow(row)
     return Response(output.getvalue(), mimetype='text/csv')
