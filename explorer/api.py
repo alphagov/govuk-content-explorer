@@ -1,5 +1,5 @@
 import csv
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, send_from_directory
 from StringIO import StringIO
 
 from .document import Document
@@ -18,6 +18,10 @@ def title_or_slug(item):
         return title
     return item.get("slug", "")
 
+
+@app.route("/robots.txt")
+def robots():
+    return send_from_directory(app.static_folder, "robots.txt")
 
 @app.route("/")
 def main(**params):
